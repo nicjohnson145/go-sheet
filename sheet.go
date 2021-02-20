@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"strconv"
-	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -39,12 +38,12 @@ func (s *sheet) loadUI(app fyne.App) {
 	s.window.Resize(fyne.NewSize(760, 910))
 
 	// TODO: remove once size is finalized
-	go func() {
-		for {
-			fmt.Println(s.window.Canvas().Size())
-			time.Sleep(time.Second * 2)
-		}
-	}()
+	//go func() {
+	//    for {
+	//        fmt.Println(s.window.Canvas().Size())
+	//        time.Sleep(time.Second * 2)
+	//    }
+	//}()
 
 	s.window.Show()
 }
@@ -103,7 +102,7 @@ func (s *sheet) basicCard(name string, val string)  *widget.Card {
 
 func (s *sheet) setupTabs() fyne.CanvasObject {
 	tabs := container.NewAppTabs(
-		container.NewTabItem("Skills", s.skillTab(s.character)),
+		container.NewTabItem("Skills", s.skillTab()),
 		container.NewTabItem("Spells", s.spellTab()),
 		container.NewTabItem("Weapons", s.weaponsTab()),
 		container.NewTabItem("Features", s.featuresTab()),
@@ -114,10 +113,6 @@ func (s *sheet) setupTabs() fyne.CanvasObject {
 
 func (s *sheet) spellTab() fyne.CanvasObject {
 	return widget.NewLabel("Hello from spell tab")
-}
-
-func (s *sheet) weaponsTab() fyne.CanvasObject {
-	return widget.NewLabel("Hello from weapons tab")
 }
 
 func (s *sheet) featuresTab() fyne.CanvasObject {

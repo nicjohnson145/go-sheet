@@ -49,13 +49,25 @@ hit-dice:
 
 weapons:
   - name: Quarterstaff
-    bonus: strength
+    attribute: strength
     damage:
-      dice: 1d6
+      dice: 1d6 (1d8)
       type: bludgeoning
     properties:
       - versatile
     desc: ""
+    proficient: true
+    range: 5 ft
+  - name: Longsword
+    attribute: strength
+    damage:
+      dice: 1d8
+      type: slashing
+    properties:
+      - versatile
+    desc: >
+      A lengthy straight blade designed for slashing foes, the longsword is a highly versatile weapon
+      that may also be wielded with two hands for more punishing strikes.
 
 equipment:
   - name: Hat of Disguise

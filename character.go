@@ -11,25 +11,25 @@ import (
 )
 
 type Character struct {
-	Name              string          `yaml:"name"`
-	Class             string          `yaml:"class"`
-	Race              string          `yaml:"race"`
-	Background        string          `yaml:"background"`
-	Alignment         string          `yaml:"alignment"`
-	PersonalityTraits string          `yaml:"personality-traits"`
-	Ideals            string          `yaml:"ideals"`
-	Bonds             string          `yaml:"bonds"`
-	Flaws             string          `yaml:"flaws"`
-	Level             int             `yaml:"level"`
-	Attributes        *Attributes      `yaml:"attributes"`
-	Proficiency       int             `yaml:"proficiency"`
-	Languages         []string        `yaml:"languages"`
-	SavingThrows      []string        `yaml:"saving-throws"`
+	Name              string      `yaml:"name"`
+	Class             string      `yaml:"class"`
+	Race              string      `yaml:"race"`
+	Background        string      `yaml:"background"`
+	Alignment         string      `yaml:"alignment"`
+	PersonalityTraits string      `yaml:"personality-traits"`
+	Ideals            string      `yaml:"ideals"`
+	Bonds             string      `yaml:"bonds"`
+	Flaws             string      `yaml:"flaws"`
+	Level             int         `yaml:"level"`
+	Attributes        *Attributes `yaml:"attributes"`
+	Proficiency       int         `yaml:"proficiency"`
+	Languages         []string    `yaml:"languages"`
+	SavingThrows      []string    `yaml:"saving-throws"`
 	AllSavingThrows   []string
-	Skills            []string        `yaml:"skills"`
+	Skills            []string `yaml:"skills"`
 	AllSkills         []Skill
-	ArmorClass        int             `yaml:"armor-class"`
-	Speed             int             `yaml:"speed"`
+	ArmorClass        int              `yaml:"armor-class"`
+	Speed             int              `yaml:"speed"`
 	HitPoints         *HitPoints       `yaml:"hit-points"`
 	HitDice           *HitDice         `yaml:"hit-dice"`
 	Weapons           []*Weapon        `yaml:"weapons"`
@@ -42,7 +42,7 @@ type Character struct {
 type Attributes struct {
 	Strength     int `yaml:"strength"`
 	Dexterity    int `yaml:"dexterity"`
-	Constitution  int `yaml:"constitution"`
+	Constitution int `yaml:"constitution"`
 	Intelligence int `yaml:"intelligence"`
 	Wisdom       int `yaml:"wisdom"`
 	Charisma     int `yaml:"charisma"`
@@ -67,10 +67,19 @@ type HitDice struct {
 
 type Weapon struct {
 	Name       string   `yaml:"name"`
-	Damage     *Damage   `yaml:"damage"`
+	Attribute  string   `yaml:"attribute"`
+	Damage     *Damage  `yaml:"damage"`
 	Properties []string `yaml:"properties"`
 	Desc       string   `yaml:"desc"`
 	Proficient bool     `yaml:"proficient"`
+	Range      string   `yaml:"range"`
+}
+
+func (w Weapon) GetRange() string {
+	if w.Range == "" {
+		return "5 ft"
+	}
+	return w.Range
 }
 
 type Damage struct {
@@ -173,19 +182,27 @@ func (c *Character) modStringForSave(save string) string {
 	return c.modString(mod)
 }
 
+func (c *Character) modStringForWeapon(w Weapon) string {
+	mod := c.calcMod(c.attrForString(w.Attribute))
+	if w.Proficient {
+		mod += c.Proficiency
+	}
+	return c.modString(mod)
+}
+
 func (c *Character) attrForString(s string) int {
-	switch s {
-	case "Strength":
+	switch strings.ToUpper(s) {
+	case "STRENGTH":
 		return c.Attributes.Strength
-	case "Dexterity":
+	case "DEXTERITY":
 		return c.Attributes.Dexterity
-	case "Constitution":
+	case "CONSTITUTION":
 		return c.Attributes.Constitution
-	case "Intelligence":
+	case "INTELLIGENCE":
 		return c.Attributes.Intelligence
-	case "Wisdom":
+	case "WISDOM":
 		return c.Attributes.Wisdom
-	case "Charisma":
+	case "CHARISMA":
 		return c.Attributes.Charisma
 	default:
 		panic("wtf did you do")
@@ -227,4 +244,3 @@ func newCharacter(path string) (*Character, error) {
 
 	return c, nil
 }
-

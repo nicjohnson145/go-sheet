@@ -3,26 +3,27 @@ package main
 import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
-func (s *sheet) skillTab(c *Character) fyne.CanvasObject {
+func (s *sheet) skillTab() fyne.CanvasObject {
 	return fyne.NewContainerWithLayout(
 		layout.NewHBoxLayout(),
-		skills(c),
+		s.skills(),
 		widget.NewSeparator(),
-		saves(c),
+		s.saves(),
 	)
 }
 
-func skills(c *Character) fyne.CanvasObject {
+func (s *sheet)skills() fyne.CanvasObject {
 	profs := []fyne.CanvasObject{}
 	names := []fyne.CanvasObject{}
 	mods := []fyne.CanvasObject{}
-	for _, skill := range c.AllSkills {
-		profs = append(profs, profWidget(func() bool { return c.isProficientInSkill(skill) }))
+	for _, skill := range s.character.AllSkills {
+		profs = append(profs, profWidget(func() bool { return s.character.isProficientInSkill(skill) }))
 		names = append(names, widget.NewLabel(skill.Name))
-		mods = append(mods, widget.NewLabel(c.modStringForSkill(skill)))
+		mods = append(mods, widget.NewLabel(s.character.modStringForSkill(skill)))
 	}
 
 	return fyne.NewContainerWithLayout(
@@ -50,14 +51,14 @@ func skills(c *Character) fyne.CanvasObject {
 	)
 }
 
-func saves(c *Character) fyne.CanvasObject {
+func (s *sheet) saves() fyne.CanvasObject {
 	profs := []fyne.CanvasObject{}
 	names := []fyne.CanvasObject{}
 	mods := []fyne.CanvasObject{}
-	for _, save := range c.AllSavingThrows {
-		profs = append(profs, profWidget(func() bool { return c.isProficientInSave(save) }))
+	for _, save := range s.character.AllSavingThrows {
+		profs = append(profs, profWidget(func() bool { return s.character.isProficientInSave(save) }))
 		names = append(names, widget.NewLabel(save))
-		mods = append(mods, widget.NewLabel(c.modStringForSave(save)))
+		mods = append(mods, widget.NewLabel(s.character.modStringForSave(save)))
 	}
 
 	return fyne.NewContainerWithLayout(
@@ -86,11 +87,9 @@ func saves(c *Character) fyne.CanvasObject {
 }
 
 func profWidget(is func() bool) fyne.CanvasObject {
-	var char string
 	if is() {
-		char = "X"
-	} else {
-		char = " "
+		return widget.NewIcon(theme.RadioButtonCheckedIcon())
 	}
-	return widget.NewLabel(char)
+
+	return widget.NewIcon(theme.RadioButtonIcon())
 }
