@@ -37,7 +37,9 @@ func (s *sheet) weaponAccordionContent(w Weapon) fyne.CanvasObject {
 
 	body := []fyne.CanvasObject{}
 	if w.Desc != "" {
-		body = append(body, widget.NewLabel(w.Desc))
+		desc := widget.NewLabel(w.Desc)
+		desc.Wrapping = fyne.TextWrapWord
+		body = append(body, desc)
 	}
 
 	body = append(body, fyne.NewContainerWithLayout(

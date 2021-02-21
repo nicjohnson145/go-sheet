@@ -35,7 +35,7 @@ func (s *sheet) loadUI(app fyne.App) {
 			s.setupTabs(),
 		),
 	)
-	s.window.Resize(fyne.NewSize(760, 910))
+	// s.window.Resize(fyne.NewSize(760, 910))
 
 	// TODO: remove once size is finalized
 	//go func() {
@@ -106,6 +106,8 @@ func (s *sheet) setupTabs() fyne.CanvasObject {
 		container.NewTabItem("Spells", s.spellTab()),
 		container.NewTabItem("Weapons", s.weaponsTab()),
 		container.NewTabItem("Features", s.featuresTab()),
+		container.NewTabItem("Equipment", s.equipmentTab()),
+		container.NewTabItem("Consumables", s.consumablesTab()),
 	)
 	tabs.SetTabLocation(container.TabLocationTop)
 	return tabs
@@ -115,6 +117,3 @@ func (s *sheet) spellTab() fyne.CanvasObject {
 	return widget.NewLabel("Hello from spell tab")
 }
 
-func (s *sheet) featuresTab() fyne.CanvasObject {
-	return widget.NewLabel("Hello from features tab")
-}
