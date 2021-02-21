@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
@@ -15,7 +16,9 @@ func (s *sheet) weaponsTab() fyne.CanvasObject {
 		items = append(items, s.weaponAccordionItem(*wep))
 	}
 
-	return widget.NewAccordion(items...)
+	return container.NewVScroll(
+		widget.NewAccordion(items...),
+	)
 }
 
 func (s *sheet) weaponAccordionItem(w Weapon) *widget.AccordionItem {
@@ -30,11 +33,38 @@ func (s *sheet) weaponAccordionItem(w Weapon) *widget.AccordionItem {
 }
 
 func (s *sheet) weaponAccordionContent(w Weapon) fyne.CanvasObject {
+	attrs, size := s.weaponItemAnnotations(w)
+
+	body := []fyne.CanvasObject{}
+	if w.Desc != "" {
+		body = append(body, widget.NewLabel(w.Desc))
+	}
+
+	body = append(body, fyne.NewContainerWithLayout(
+		layout.NewGridWrapLayout(size),
+		attrs...,
+	))
+
 	return fyne.NewContainerWithLayout(
 		layout.NewVBoxLayout(),
-		widget.NewLabel(w.Desc),
-		widget.NewLabel(fmt.Sprintf("Range: %v", w.GetRange())),
-		widget.NewLabel(fmt.Sprintf("Damage: %v [%v]", w.Damage.Dice, w.Damage.Type)),
-		widget.NewLabel(fmt.Sprintf("Properties: %v", strings.Join(w.Properties, ", "))),
+		body...,
 	)
+}
+
+func (s *sheet) weaponItemAnnotations(w Weapon) ([]fyne.CanvasObject, fyne.Size) {
+	attrs := []fyne.CanvasObject{
+		widget.NewCard("", "", widget.NewLabel(fmt.Sprintf("Range: %v", w.GetRange()))),
+		widget.NewCard("", "", widget.NewLabel(fmt.Sprintf("Damage: %v [%v]", w.Damage.Dice, w.Damage.Type))),
+		widget.NewCard("", "", widget.NewLabel(fmt.Sprintf("Properties: %v", strings.Join(w.Properties, ", ")))),
+	}
+
+	var minwidth float32 = 0
+	for _, a := range attrs {
+		size := a.MinSize().Width
+		if size > minwidth {
+			minwidth = size
+		}
+	}
+
+	return attrs, fyne.NewSize(minwidth, attrs[0].MinSize().Height)
 }
