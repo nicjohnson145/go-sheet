@@ -16,9 +16,9 @@ func (s *sheet) weaponsTab() fyne.CanvasObject {
 		items = append(items, s.weaponAccordionItem(*wep))
 	}
 
-	return container.NewVScroll(
-		widget.NewAccordion(items...),
-	)
+	acc := widget.NewAccordion(items...)
+	acc.MultiOpen = true
+	return container.NewVScroll(acc)
 }
 
 func (s *sheet) weaponAccordionItem(w Weapon) *widget.AccordionItem {

@@ -10,6 +10,20 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+const (
+	Cantrips = "cantrips"
+	Level1 = "level-1"
+	Level2 = "level-2"
+	Level3 = "level-3"
+	Level4 = "level-4"
+	Level5 = "level-5"
+	Level6 = "level-6"
+	Level7 = "level-7"
+	Level8 = "level-8"
+	Level9 = "level-9"
+)
+
+
 type Character struct {
 	Name              string      `yaml:"name"`
 	Class             string      `yaml:"class"`
@@ -28,15 +42,15 @@ type Character struct {
 	AllSavingThrows   []string
 	Skills            []string `yaml:"skills"`
 	AllSkills         []Skill
-	ArmorClass        int              `yaml:"armor-class"`
-	Speed             int              `yaml:"speed"`
-	HitPoints         *HitPoints       `yaml:"hit-points"`
-	HitDice           *HitDice         `yaml:"hit-dice"`
-	Weapons           []*Weapon        `yaml:"weapons"`
-	Equipment         []*CountableItem `yaml:"equipment"`
-	Consumables       []*CountableItem `yaml:"consumables"`
-	Features          []*Item          `yaml:"features"`
-	Spells            *Spells          `yaml:"spells"`
+	ArmorClass        int                    `yaml:"armor-class"`
+	Speed             int                    `yaml:"speed"`
+	HitPoints         *HitPoints             `yaml:"hit-points"`
+	HitDice           *HitDice               `yaml:"hit-dice"`
+	Weapons           []*Weapon              `yaml:"weapons"`
+	Equipment         []*CountableItem       `yaml:"equipment"`
+	Consumables       []*CountableItem       `yaml:"consumables"`
+	Features          []*Item                `yaml:"features"`
+	Spells            map[string]SpellSecion `yaml:"spells"`
 }
 
 type Attributes struct {
@@ -93,9 +107,9 @@ type Item struct {
 }
 
 type CountableItem struct {
-	Name string `yaml:"name"`
-	Desc string `yaml:"desc"`
-	Count int `yaml:"count"`
+	Name  string `yaml:"name"`
+	Desc  string `yaml:"desc"`
+	Count int    `yaml:"count"`
 }
 
 type Spell struct {
@@ -109,17 +123,10 @@ type Spell struct {
 	Desc          string   `yaml:"desc"`
 }
 
-type Spells struct {
-	Cantrips []*Spell `yaml:"cantrips"`
-	Level1   []*Spell `yaml:"level-1"`
-	Level2   []*Spell `yaml:"level-2"`
-	Level3   []*Spell `yaml:"level-3"`
-	Level4   []*Spell `yaml:"level-4"`
-	Level5   []*Spell `yaml:"level-5"`
-	Level6   []*Spell `yaml:"level-6"`
-	Level7   []*Spell `yaml:"level-7"`
-	Level8   []*Spell `yaml:"level-8"`
-	Level9   []*Spell `yaml:"level-9"`
+type SpellSecion struct {
+	Slots    int      `yaml:"slots"`
+	MaxSlots int      `yaml:"max-slots"`
+	Spells   []*Spell `yaml:"spells"`
 }
 
 func (c *Character) setDefaultData() {

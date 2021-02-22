@@ -12,7 +12,9 @@ type BasicAccordion struct {
 }
 
 func (s *sheet) scrolledAccordion(items []BasicAccordion) fyne.CanvasObject {
-	return container.NewVScroll(widget.NewAccordion(s.makeAccordionItems(items)...))
+	acc := widget.NewAccordion(s.makeAccordionItems(items)...)
+	acc.MultiOpen = true
+	return container.NewVScroll(acc)
 }
 
 func (s *sheet) makeAccordionItems(items []BasicAccordion) []*widget.AccordionItem {
