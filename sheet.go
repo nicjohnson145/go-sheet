@@ -15,8 +15,8 @@ type sheet struct {
 	character *Character
 }
 
-func newSheet() (*sheet, error) {
-	char, err := newCharacter("./example.yml")
+func newSheet(path string) (*sheet, error) {
+	char, err := newCharacter(path)
 	if err != nil {
 		return nil, err
 	}
