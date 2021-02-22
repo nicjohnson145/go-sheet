@@ -31,4 +31,3 @@ func (s *sheet) minCardSize(items []fyne.CanvasObject) fyne.Size {
 
 	return fyne.NewSize(minwidth, items[0].MinSize().Height)
 }
-

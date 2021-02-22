@@ -11,7 +11,7 @@ func (s *sheet) consumablesTab() fyne.CanvasObject {
 	for _, item := range s.character.Consumables {
 		items = append(items, BasicAccordion{
 			Title: fmt.Sprintf("%v (%v)", item.Name, item.Count),
-			Desc: item.Desc,
+			Desc:  item.Desc,
 		})
 	}
 

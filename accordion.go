@@ -8,7 +8,7 @@ import (
 
 type BasicAccordion struct {
 	Title string
-	Desc string
+	Desc  string
 }
 
 func (s *sheet) scrolledAccordion(items []BasicAccordion) fyne.CanvasObject {

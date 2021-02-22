@@ -16,7 +16,7 @@ func (s *sheet) skillTab() fyne.CanvasObject {
 	)
 }
 
-func (s *sheet)skills() fyne.CanvasObject {
+func (s *sheet) skills() fyne.CanvasObject {
 	profs := []fyne.CanvasObject{}
 	names := []fyne.CanvasObject{}
 	mods := []fyne.CanvasObject{}

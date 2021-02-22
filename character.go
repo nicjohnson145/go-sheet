@@ -12,17 +12,16 @@ import (
 
 const (
 	Cantrips = "cantrips"
-	Level1 = "level-1"
-	Level2 = "level-2"
-	Level3 = "level-3"
-	Level4 = "level-4"
-	Level5 = "level-5"
-	Level6 = "level-6"
-	Level7 = "level-7"
-	Level8 = "level-8"
-	Level9 = "level-9"
+	Level1   = "level-1"
+	Level2   = "level-2"
+	Level3   = "level-3"
+	Level4   = "level-4"
+	Level5   = "level-5"
+	Level6   = "level-6"
+	Level7   = "level-7"
+	Level8   = "level-8"
+	Level9   = "level-9"
 )
-
 
 type Character struct {
 	Name              string      `yaml:"name"`

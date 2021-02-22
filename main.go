@@ -8,7 +8,7 @@ import (
 
 func main() {
 	app := app.New()
-	
+
 	s, err := newSheet()
 	if err != nil {
 		fmt.Print(err)

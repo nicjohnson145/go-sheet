@@ -9,7 +9,7 @@ func (s *sheet) featuresTab() fyne.CanvasObject {
 	for _, item := range s.character.Features {
 		items = append(items, BasicAccordion{
 			Title: item.Name,
-			Desc: item.Desc,
+			Desc:  item.Desc,
 		})
 	}
 

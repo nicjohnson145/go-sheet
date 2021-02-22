@@ -11,7 +11,7 @@ import (
 )
 
 type sheet struct {
-	window fyne.Window
+	window    fyne.Window
 	character *Character
 }
 
@@ -82,7 +82,7 @@ func (s *sheet) attributeBlock(name string, raw int) fyne.CanvasObject {
 	return s.basicCard(name, fmt.Sprintf("%v (%v)", raw, mod))
 }
 
-func (s *sheet) basicCard(name string, val string)  *widget.Card {
+func (s *sheet) basicCard(name string, val string) *widget.Card {
 	return widget.NewCard(
 		"",
 		"",
@@ -112,4 +112,3 @@ func (s *sheet) setupTabs() fyne.CanvasObject {
 	tabs.SetTabLocation(container.TabLocationTop)
 	return tabs
 }
-

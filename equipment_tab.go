@@ -9,7 +9,7 @@ func (s *sheet) equipmentTab() fyne.CanvasObject {
 	for _, item := range s.character.Equipment {
 		items = append(items, BasicAccordion{
 			Title: item.Name,
-			Desc: item.Desc,
+			Desc:  item.Desc,
 		})
 	}
 	return s.scrolledAccordion(items)
