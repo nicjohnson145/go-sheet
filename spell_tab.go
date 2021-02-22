@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 
 	"fyne.io/fyne/v2"
@@ -83,38 +84,29 @@ func (s *sheet) spellAccordion(spells []*Spell) fyne.CanvasObject {
 }
 
 func (s *sheet) spellCard(spell Spell) fyne.CanvasObject {
-	var concentration string
-	if spell.Concentration {
-		concentration = "yes"
-	} else {
-		concentration = "no"
+	cards := []string{
+		fmt.Sprintf("Range: %v", spell.Range),
+		fmt.Sprintf("Duration: %v", spell.Duration),
+		fmt.Sprintf("Concentration: %v", s.boolToStr(spell.Concentration)),
+		fmt.Sprintf("Ritual: %v", s.boolToStr(spell.Ritual)),
+		fmt.Sprintf("Components: %v", strings.Join(spell.Components, ", ")),
 	}
 
-	var ritual string
-	if spell.Ritual {
-		ritual = "yes"
-	} else {
-		ritual = "no"
-	}
+	grid := s.cardGridFromStrings(cards)
 
 	desc := widget.NewLabel(spell.Desc)
 	desc.Wrapping = fyne.TextWrapWord
 
 	return fyne.NewContainerWithLayout(
-		layout.NewFormLayout(),
-		widget.NewLabel("Range"),
-		widget.NewLabel(spell.Range),
-		widget.NewLabel("Duration"),
-		widget.NewLabel(spell.Duration),
-		widget.NewLabel("Concentration"),
-		widget.NewLabel(concentration),
-		widget.NewLabel("Components"),
-		widget.NewLabel(strings.Join(spell.Components, ", ")),
-		widget.NewLabel("Casting Time"),
-		widget.NewLabel(spell.CastingTime),
-		widget.NewLabel("Ritual"),
-		widget.NewLabel(ritual),
-		widget.NewLabel("Description"),
+		layout.NewVBoxLayout(),
+		grid,
 		desc,
 	)
+}
+
+func (s *sheet) boolToStr(b bool) string {
+	if b {
+		return "yes"
+	}
+	return "no"
 }

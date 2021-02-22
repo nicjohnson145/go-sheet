@@ -60,13 +60,7 @@ func (s *sheet) weaponItemAnnotations(w Weapon) ([]fyne.CanvasObject, fyne.Size)
 		widget.NewCard("", "", widget.NewLabel(fmt.Sprintf("Properties: %v", strings.Join(w.Properties, ", ")))),
 	}
 
-	var minwidth float32 = 0
-	for _, a := range attrs {
-		size := a.MinSize().Width
-		if size > minwidth {
-			minwidth = size
-		}
-	}
+	size := s.minCardSize(attrs)
 
-	return attrs, fyne.NewSize(minwidth, attrs[0].MinSize().Height)
+	return attrs, size
 }
