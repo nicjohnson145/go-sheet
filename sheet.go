@@ -35,7 +35,7 @@ func (s *sheet) loadUI(app fyne.App) {
 			s.setupTabs(),
 		),
 	)
-	// s.window.Resize(fyne.NewSize(760, 910))
+	// s.window.Resize(fyne.NewSize(570, 956))
 
 	// TODO: remove once size is finalized
 	//go func() {

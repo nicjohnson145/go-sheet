@@ -24,20 +24,21 @@ const (
 )
 
 type Character struct {
-	Name              string      `yaml:"name"`
-	Class             string      `yaml:"class"`
-	Race              string      `yaml:"race"`
-	Background        string      `yaml:"background"`
-	Alignment         string      `yaml:"alignment"`
-	PersonalityTraits string      `yaml:"personality-traits"`
-	Ideals            string      `yaml:"ideals"`
-	Bonds             string      `yaml:"bonds"`
-	Flaws             string      `yaml:"flaws"`
-	Level             int         `yaml:"level"`
-	Attributes        *Attributes `yaml:"attributes"`
-	Proficiency       int         `yaml:"proficiency"`
-	Languages         []string    `yaml:"languages"`
-	SavingThrows      []string    `yaml:"saving-throws"`
+	Name              string        `yaml:"name"`
+	Class             string        `yaml:"class"`
+	Race              string        `yaml:"race"`
+	Background        string        `yaml:"background"`
+	Alignment         string        `yaml:"alignment"`
+	PersonalityTraits string        `yaml:"personality-traits"`
+	Ideals            string        `yaml:"ideals"`
+	Bonds             string        `yaml:"bonds"`
+	Flaws             string        `yaml:"flaws"`
+	Level             int           `yaml:"level"`
+	Attributes        *Attributes   `yaml:"attributes"`
+	Proficiency       int           `yaml:"proficiency"`
+	Proficiencies     Proficiencies `yaml:"proficiencies"`
+	Languages         []string      `yaml:"languages"`
+	SavingThrows      []string      `yaml:"saving-throws"`
 	AllSavingThrows   []string
 	Skills            []string `yaml:"skills"`
 	AllSkills         []Skill
@@ -59,6 +60,12 @@ type Attributes struct {
 	Intelligence int `yaml:"intelligence"`
 	Wisdom       int `yaml:"wisdom"`
 	Charisma     int `yaml:"charisma"`
+}
+
+type Proficiencies struct {
+	Armor   []string `yaml:"armor"`
+	Tools   []string `yaml:"tools"`
+	Weapons []string `yaml:"weapons"`
 }
 
 type Skill struct {

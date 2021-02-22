@@ -24,6 +24,15 @@ languages:
   - Draconic
   - Common
 
+proficiencies:
+  armor:
+    - light
+  weapons:
+    - martial
+    - simple
+  tools:
+    - herbalism kit
+
 saving-throws:
   - charisma
   - wisdom
