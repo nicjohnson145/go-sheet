@@ -51,6 +51,7 @@ type Character struct {
 	Consumables       []*CountableItem       `yaml:"consumables"`
 	Features          []*Item                `yaml:"features"`
 	Spells            map[string]SpellSecion `yaml:"spells"`
+	Loot              []*CountableItem       `yaml:"loot"`
 }
 
 type Attributes struct {
