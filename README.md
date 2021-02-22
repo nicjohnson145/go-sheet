@@ -5,6 +5,8 @@ bonuses to attack/save/etc calculated.
 
 ### Building and Running
 
+Requires go 1.16's `embed` feature
+
 ```
 go build
 ./go-sheet /path/to/sheet.yml
