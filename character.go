@@ -93,7 +93,8 @@ type Item struct {
 }
 
 type CountableItem struct {
-	Item
+	Name string `yaml:"name"`
+	Desc string `yaml:"desc"`
 	Count int `yaml:"count"`
 }
 

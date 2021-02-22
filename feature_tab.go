@@ -2,9 +2,16 @@ package main
 
 import (
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/widget"
 )
 
 func (s *sheet) featuresTab() fyne.CanvasObject {
-	return widget.NewLabel("Hello from feature tab")
+	items := []BasicAccordion{}
+	for _, item := range s.character.Features {
+		items = append(items, BasicAccordion{
+			Title: item.Name,
+			Desc: item.Desc,
+		})
+	}
+
+	return s.scrolledAccordion(items)
 }

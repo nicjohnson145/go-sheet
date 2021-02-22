@@ -113,7 +113,3 @@ func (s *sheet) setupTabs() fyne.CanvasObject {
 	return tabs
 }
 
-func (s *sheet) spellTab() fyne.CanvasObject {
-	return widget.NewLabel("Hello from spell tab")
-}
-

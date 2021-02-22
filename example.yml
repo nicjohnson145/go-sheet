@@ -72,7 +72,7 @@ weapons:
 equipment:
   - name: Hat of Disguise
     desc: >
-      While wearing this hat, yo9u can use an action to cast the disquise self spell from it at
+      While wearing this hat, you can use an action to cast the disquise self spell from it at
       will. The spell ends if the hat is removed
 
 consumables:

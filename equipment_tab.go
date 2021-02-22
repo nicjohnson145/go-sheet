@@ -2,9 +2,15 @@ package main
 
 import (
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/widget"
 )
 
 func (s *sheet) equipmentTab() fyne.CanvasObject {
-	return widget.NewLabel("Hello from equipment tab")
+	items := []BasicAccordion{}
+	for _, item := range s.character.Equipment {
+		items = append(items, BasicAccordion{
+			Title: item.Name,
+			Desc: item.Desc,
+		})
+	}
+	return s.scrolledAccordion(items)
 }

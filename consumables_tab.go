@@ -1,10 +1,19 @@
 package main
 
 import (
+	"fmt"
+
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/widget"
 )
 
 func (s *sheet) consumablesTab() fyne.CanvasObject {
-	return widget.NewLabel("Hello from consumables tab")
+	items := []BasicAccordion{}
+	for _, item := range s.character.Consumables {
+		items = append(items, BasicAccordion{
+			Title: fmt.Sprintf("%v (%v)", item.Name, item.Count),
+			Desc: item.Desc,
+		})
+	}
+
+	return s.scrolledAccordion(items)
 }
