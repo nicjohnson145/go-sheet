@@ -2,22 +2,27 @@ package main
 
 import (
 	"fmt"
+	"sort"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
 func (s *sheet) lootTab() fyne.CanvasObject {
 	contents := make([]*widget.AccordionItem, 0, len(s.character.Loot))
-	for _, loot := range s.character.Loot {
+
+	allLoot := make([]*CountableItem, len(s.character.Loot), len(s.character.Loot))
+	copy(allLoot, s.character.Loot)
+	sort.Slice(allLoot, func(i, j int) bool {
+		return allLoot[i].Name < allLoot[j].Name
+	})
+
+	for _, loot := range allLoot {
 		contents = append(contents, s.lootAccordionItem(*loot))
 	}
 
-	return fyne.NewContainerWithLayout(
-		layout.NewVBoxLayout(),
-		widget.NewAccordion(contents...),
-	)
+	return container.NewVScroll(widget.NewAccordion(contents...))
 }
 
 func (s *sheet) lootAccordionItem(item CountableItem) *widget.AccordionItem {

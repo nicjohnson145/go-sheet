@@ -166,3 +166,5 @@ loot:
   - name: Grell Poison
     count: 3
     desc: Posion scavenged from a grell
+  - name: Gold
+    count: 205
