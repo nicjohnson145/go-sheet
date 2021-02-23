@@ -14,5 +14,9 @@
 # Exclude any compiled binaries
 go-sheet*
 
+# Exclude the fyne-cross stuff
+Icon.png
+fyne-cross/
+
 # Dependency directories (remove the comment below to include it)
 # vendor/

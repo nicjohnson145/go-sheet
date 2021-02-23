@@ -7,8 +7,6 @@ import (
 	"strconv"
 	"strings"
 
-	_ "embed"
-
 	"gopkg.in/yaml.v2"
 )
 
@@ -24,9 +22,6 @@ const (
 	Level8   = "level-8"
 	Level9   = "level-9"
 )
-
-//go:embed example.yml
-var defaultSheet []byte
 
 type Character struct {
 	Name              string        `yaml:"name"`
@@ -271,7 +266,7 @@ func newCharacter(path string) (*Character, error) {
 			return c, err
 		}
 	} else {
-		data = defaultSheet
+		data = resourceExampleYml.StaticContent
 	}
 
 	err := yaml.Unmarshal(data, c)
