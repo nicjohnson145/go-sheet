@@ -42,6 +42,7 @@ type Character struct {
 	Attributes        *Attributes   `yaml:"attributes"`
 	Proficiency       int           `yaml:"proficiency"`
 	Proficiencies     Proficiencies `yaml:"proficiencies"`
+	Expertise         Expertise     `yaml:"expertise"`
 	Languages         []string      `yaml:"languages"`
 	SavingThrows      []string      `yaml:"saving-throws"`
 	AllSavingThrows   []string
@@ -72,6 +73,11 @@ type Proficiencies struct {
 	Armor   []string `yaml:"armor"`
 	Tools   []string `yaml:"tools"`
 	Weapons []string `yaml:"weapons"`
+}
+
+type Expertise struct {
+	Tools  []string `yaml:"tools"`
+	Skills []string `yaml:"skills"`
 }
 
 type Skill struct {
@@ -189,6 +195,9 @@ func (c *Character) modStringForSkill(s Skill) string {
 	mod := c.calcMod(c.attrForString(s.Mod))
 	if c.isProficientInSkill(s) {
 		mod += c.Proficiency
+		if c.isExpertInSkill(s) {
+			mod += c.Proficiency
+		}
 	}
 
 	return c.modString(mod)
@@ -231,6 +240,10 @@ func (c *Character) attrForString(s string) int {
 
 func (c *Character) isProficientInSkill(s Skill) bool {
 	return c.inList(s.Name, c.Skills)
+}
+
+func (c *Character) isExpertInSkill(s Skill) bool {
+	return c.inList(s.Name, c.Expertise.Skills)
 }
 
 func (c *Character) isProficientInSave(s string) bool {
