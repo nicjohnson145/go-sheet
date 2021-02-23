@@ -88,7 +88,7 @@ type HitPoints struct {
 type HitDice struct {
 	Current int    `yaml:"current"`
 	Max     int    `yaml:"max"`
-	dice    string `yaml:"dice"`
+	Dice    string `yaml:"dice"`
 }
 
 type Weapon struct {

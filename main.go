@@ -14,10 +14,11 @@ func main() {
 		path = os.Args[1]
 	}
 
-	s, err := newSheet(path)
+	s := newSheet(path)
+	err := s.loadSheet()
 	if err != nil {
-		fmt.Print(err)
-		return
+		fmt.Println(err)
+		os.Exit(1)
 	}
 	s.loadUI(app)
 	app.Run()

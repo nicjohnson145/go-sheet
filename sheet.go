@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"strconv"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -13,39 +15,71 @@ import (
 type sheet struct {
 	window    fyne.Window
 	character *Character
+	sheetPath string
+	tabs      *container.AppTabs
 }
 
-func newSheet(path string) (*sheet, error) {
-	char, err := newCharacter(path)
-	if err != nil {
-		return nil, err
-	}
+func newSheet(path string) *sheet {
 	s := &sheet{
-		character: char,
+		sheetPath: path,
 	}
-	return s, nil
+	return s
+}
+
+func (s *sheet) loadSheet() error {
+	char, err := newCharacter(s.sheetPath)
+	if err != nil {
+		return err
+	}
+
+	s.character = char
+	return nil
 }
 
 func (s *sheet) loadUI(app fyne.App) {
 	s.window = app.NewWindow("Go-Sheet")
+	s.setMainWinContent()
+
+	go func() {
+		for {
+			time.Sleep(time.Second * 3)
+			s.updateCharacterData()
+		}
+	}()
+	s.window.Show()
+}
+
+func (s *sheet) updateCharacterData() {
+	char, err := newCharacter(s.sheetPath)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	if !reflect.DeepEqual(char, s.character) {
+		s.character = char
+		fmt.Println("Updating character data")
+		tabIdx := s.tabs.CurrentTabIndex()
+		s.setMainWinContent()
+		s.tabs.SelectTabIndex(tabIdx)
+	}
+}
+
+func (s *sheet) setMainWinContent() {
 	s.window.SetContent(
 		fyne.NewContainerWithLayout(
 			layout.NewVBoxLayout(),
 			s.basicStats(),
 			s.setupTabs(),
+			//fyne.NewContainerWithLayout(
+			//    layout.NewHBoxLayout(),
+			//    layout.NewSpacer(),
+			//    widget.NewButton("Refresh", func() {
+			//        s.updateCharacterData()
+			//    }),
+			//),
 		),
 	)
-	// s.window.Resize(fyne.NewSize(570, 956))
-
-	// TODO: remove once size is finalized
-	//go func() {
-	//    for {
-	//        fmt.Println(s.window.Canvas().Size())
-	//        time.Sleep(time.Second * 2)
-	//    }
-	//}()
-
-	s.window.Show()
 }
 
 func (s *sheet) basicStats() fyne.CanvasObject {
@@ -58,6 +92,19 @@ func (s *sheet) basicStats() fyne.CanvasObject {
 				widget.NewLabel(s.character.Name),
 				widget.NewSeparator(),
 				widget.NewLabel(fmt.Sprintf("%v (%v)", s.character.Class, s.character.Level)),
+				widget.NewSeparator(),
+				widget.NewLabel(fmt.Sprintf(
+					"HP: %v / %v",
+					s.character.HitPoints.Current,
+					s.character.HitPoints.Max,
+				)),
+				widget.NewSeparator(),
+				widget.NewLabel(fmt.Sprintf(
+					"Hit Dice (%v): %v / %v",
+					s.character.HitDice.Dice,
+					s.character.HitDice.Current,
+					s.character.HitDice.Max,
+				)),
 			),
 		),
 		fyne.NewContainerWithLayout(
@@ -101,7 +148,7 @@ func (s *sheet) basicCard(name string, val string) *widget.Card {
 }
 
 func (s *sheet) setupTabs() fyne.CanvasObject {
-	tabs := container.NewAppTabs(
+	s.tabs = container.NewAppTabs(
 		container.NewTabItem("Skills", s.skillTab()),
 		container.NewTabItem("Spells", s.spellTab()),
 		container.NewTabItem("Weapons", s.weaponsTab()),
@@ -110,6 +157,6 @@ func (s *sheet) setupTabs() fyne.CanvasObject {
 		container.NewTabItem("Consumables", s.consumablesTab()),
 		container.NewTabItem("Loot", s.lootTab()),
 	)
-	tabs.SetTabLocation(container.TabLocationTop)
-	return tabs
+	s.tabs.SetTabLocation(container.TabLocationTop)
+	return s.tabs
 }
