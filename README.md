@@ -5,15 +5,16 @@ bonuses to attack/save/etc calculated.
 
 ### Building and Running
 
-Requires go 1.16's `embed` feature
+There are pre-compiled binaries for Linux, Windows, & Mac
+[here](https://github.com/nicjohnson145/go-sheet/releases/latest). Or optionally clone this repo and
+run `go build`
+
+To run go-sheet, simple supply the path to the character yaml on the command line. Go-sheet will
+watch this file for changes and update whenever a change is detected
 
 ```
-go build
 ./go-sheet /path/to/sheet.yml
 ```
 
-If no sheet is given, the example sheet from this repo will be used
+If no sheet is given, the example sheet from this repo will be used.
 
-### Future Features
-
-* Live reload when underlying character sheet changes
