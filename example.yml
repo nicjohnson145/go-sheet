@@ -31,6 +31,12 @@ skills:
   - intimidation
   - sleight of hand
   - survival
+expertise:
+  tools:
+    - herbalism kit
+  skills:
+    - survival
+    - sleight of hand
 armor-class: 13
 initiative: 0
 speed: 30
@@ -39,7 +45,8 @@ hit-points:
   max: 20
   temp: 0
 hit-dice:
-  num: 5
+  current: 5
+  max: 5
   dice: d8
 weapons:
   - name: Quarterstaff

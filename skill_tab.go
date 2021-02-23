@@ -2,6 +2,7 @@ package main
 
 import (
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
@@ -88,10 +89,16 @@ func (s *sheet) infoColumn() fyne.CanvasObject {
 	if len(s.character.Proficiencies.Weapons) > 0 {
 		contents = append(contents, s.listToLabels("Weapons", s.character.Proficiencies.Weapons))
 	}
+	if len(s.character.Expertise.Skills) > 0 || len(s.character.Expertise.Tools) > 0 {
+		expertise := append(s.character.Expertise.Skills, s.character.Expertise.Tools...)
+		contents = append(contents, s.listToLabels("Expertise", expertise))
+	}
 
-	return fyne.NewContainerWithLayout(
-		layout.NewVBoxLayout(),
-		contents...,
+	return container.NewVScroll(
+		fyne.NewContainerWithLayout(
+			layout.NewVBoxLayout(),
+			contents...,
+		),
 	)
 }
 
