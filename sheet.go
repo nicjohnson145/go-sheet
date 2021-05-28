@@ -153,6 +153,7 @@ func (s *sheet) setupTabs() fyne.CanvasObject {
 		container.NewTabItem("Spells", s.spellTab()),
 		container.NewTabItem("Weapons", s.weaponsTab()),
 		container.NewTabItem("Features", s.featuresTab()),
+		container.NewTabItem("Resources", s.resourceTab()),
 		container.NewTabItem("Equipment", s.equipmentTab()),
 		container.NewTabItem("Consumables", s.consumablesTab()),
 		container.NewTabItem("Loot", s.lootTab()),

@@ -48,6 +48,13 @@ hit-dice:
   current: 5
   max: 5
   dice: d8
+resources:
+  - name: Sorcery Points
+    current: 5
+    max: 5
+  - name: Wand of Web Charges
+    current: 3
+    max: 4
 weapons:
   - name: Quarterstaff
     attribute: strength

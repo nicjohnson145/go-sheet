@@ -24,25 +24,23 @@ const (
 )
 
 type Character struct {
-	Name              string        `yaml:"name"`
-	Class             string        `yaml:"class"`
-	Race              string        `yaml:"race"`
-	Background        string        `yaml:"background"`
-	Alignment         string        `yaml:"alignment"`
-	PersonalityTraits string        `yaml:"personality-traits"`
-	Ideals            string        `yaml:"ideals"`
-	Bonds             string        `yaml:"bonds"`
-	Flaws             string        `yaml:"flaws"`
-	Level             int           `yaml:"level"`
-	Attributes        *Attributes   `yaml:"attributes"`
-	Proficiency       int           `yaml:"proficiency"`
-	Proficiencies     Proficiencies `yaml:"proficiencies"`
-	Expertise         Expertise     `yaml:"expertise"`
-	Languages         []string      `yaml:"languages"`
-	SavingThrows      []string      `yaml:"saving-throws"`
-	AllSavingThrows   []string
-	Skills            []string `yaml:"skills"`
-	AllSkills         []Skill
+	Name              string                 `yaml:"name"`
+	Class             string                 `yaml:"class"`
+	Race              string                 `yaml:"race"`
+	Background        string                 `yaml:"background"`
+	Alignment         string                 `yaml:"alignment"`
+	PersonalityTraits string                 `yaml:"personality-traits"`
+	Ideals            string                 `yaml:"ideals"`
+	Bonds             string                 `yaml:"bonds"`
+	Flaws             string                 `yaml:"flaws"`
+	Level             int                    `yaml:"level"`
+	Attributes        *Attributes            `yaml:"attributes"`
+	Proficiency       int                    `yaml:"proficiency"`
+	Proficiencies     Proficiencies          `yaml:"proficiencies"`
+	Expertise         Expertise              `yaml:"expertise"`
+	Languages         []string               `yaml:"languages"`
+	SavingThrows      []string               `yaml:"saving-throws"`
+	Skills            []string               `yaml:"skills"`
 	ArmorClass        int                    `yaml:"armor-class"`
 	Speed             int                    `yaml:"speed"`
 	HitPoints         *HitPoints             `yaml:"hit-points"`
@@ -53,6 +51,9 @@ type Character struct {
 	Features          []*Item                `yaml:"features"`
 	Spells            map[string]SpellSecion `yaml:"spells"`
 	Loot              []*CountableItem       `yaml:"loot"`
+	Resources         []*Resource            `yaml:"resources"`
+	AllSkills         []Skill
+	AllSavingThrows   []string
 }
 
 type Attributes struct {
@@ -90,6 +91,12 @@ type HitDice struct {
 	Current int    `yaml:"current"`
 	Max     int    `yaml:"max"`
 	Dice    string `yaml:"dice"`
+}
+
+type Resource struct {
+	Name    string `yaml:"name"`
+	Current int    `yaml:"current"`
+	Max     int    `yaml:"max"`
 }
 
 type Weapon struct {
