@@ -9,6 +9,11 @@ There are pre-compiled binaries for Linux, Windows, & Mac
 [here](https://github.com/nicjohnson145/go-sheet/releases/latest). Or optionally clone this repo and
 run `go build`
 
+### Dependencies
+
+If using the `go build` approach, ensure the necessary OS packages are installed as detailed
+[here](https://github.com/go-gl/glfw)
+
 To run go-sheet, simple supply the path to the character yaml on the command line. Go-sheet will
 watch this file for changes and update whenever a change is detected
 
