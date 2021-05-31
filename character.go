@@ -285,3 +285,12 @@ func newCharacter(path string) (*Character, error) {
 
 	return c, nil
 }
+
+func persistCharacter(c Character, path string) error {
+	data, err := yaml.Marshal(c)
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile(path, data, 0664)
+}

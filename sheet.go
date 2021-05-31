@@ -6,8 +6,11 @@ import (
 	"strconv"
 	"time"
 
+	"sync"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
@@ -17,6 +20,7 @@ type sheet struct {
 	character *Character
 	sheetPath string
 	tabs      *container.AppTabs
+	sheetLock sync.Mutex
 }
 
 func newSheet(path string) *sheet {
@@ -42,14 +46,17 @@ func (s *sheet) loadUI(app fyne.App) {
 
 	go func() {
 		for {
-			time.Sleep(time.Second * 3)
-			s.updateCharacterData()
+			time.Sleep(time.Second * 2)
+			s.backgroundUpdateCharacter()
 		}
 	}()
 	s.window.Show()
 }
 
-func (s *sheet) updateCharacterData() {
+func (s *sheet) backgroundUpdateCharacter() {
+	s.sheetLock.Lock()
+	defer s.sheetLock.Unlock()
+
 	char, err := newCharacter(s.sheetPath)
 	if err != nil {
 		fmt.Println(err)
@@ -57,12 +64,40 @@ func (s *sheet) updateCharacterData() {
 	}
 
 	if !reflect.DeepEqual(char, s.character) {
-		s.character = char
-		fmt.Println("Updating character data")
-		tabIdx := s.tabs.CurrentTabIndex()
-		s.setMainWinContent()
-		s.tabs.SelectTabIndex(tabIdx)
+		s.updateCharacter(char)
 	}
+}
+
+func (s *sheet) updateCharacter(char *Character) {
+	if char == nil {
+		c, err := newCharacter(s.sheetPath)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		s.character = c
+	} else {
+		s.character = char
+	}
+	fmt.Println("Updating character data")
+	tabIdx := s.tabs.CurrentTabIndex()
+	s.setMainWinContent()
+	s.tabs.SelectTabIndex(tabIdx)
+}
+
+func (s *sheet) writeCharacterData() {
+	s.sheetLock.Lock()
+	defer s.sheetLock.Unlock()
+
+	err := persistCharacter(*s.character, s.sheetPath)
+	if err != nil {
+		fmt.Println("Error writing sheet: %w", err)
+	}
+}
+
+func (s *sheet) writeReadCharacter() {
+	s.writeCharacterData()
+	s.updateCharacter(nil)
 }
 
 func (s *sheet) setMainWinContent() {
@@ -93,11 +128,7 @@ func (s *sheet) basicStats() fyne.CanvasObject {
 				widget.NewSeparator(),
 				widget.NewLabel(fmt.Sprintf("%v (%v)", s.character.Class, s.character.Level)),
 				widget.NewSeparator(),
-				widget.NewLabel(fmt.Sprintf(
-					"HP: %v / %v",
-					s.character.HitPoints.Current,
-					s.character.HitPoints.Max,
-				)),
+				s.healthButton(),
 				widget.NewSeparator(),
 				widget.NewLabel(fmt.Sprintf(
 					"Hit Dice (%v): %v / %v",
@@ -121,6 +152,37 @@ func (s *sheet) basicStats() fyne.CanvasObject {
 				s.basicCard("Proficiency", fmt.Sprintf("+%v", s.character.Proficiency)),
 			),
 		),
+	)
+}
+
+func (s *sheet) healthButton() fyne.CanvasObject {
+	return widget.NewButton(
+		fmt.Sprintf("HP: %v / %v", s.character.HitPoints.Current, s.character.HitPoints.Max),
+		func() {
+			e := widget.NewEntry()
+			dialog.ShowCustomConfirm(
+				"Adjust Health",
+				"Heal",
+				"Damage",
+				e,
+				func(b bool) {
+					val, err := strconv.Atoi(e.Text)
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
+					if b {
+						s.character.HitPoints.Current += val
+						fmt.Println(fmt.Sprintf("Healing for %v", val))
+					} else {
+						s.character.HitPoints.Current -= val
+						fmt.Println(fmt.Sprintf("Taking %v damage", e.Text))
+					}
+					s.writeReadCharacter()
+				},
+				s.window,
+			)
+		},
 	)
 }
 
