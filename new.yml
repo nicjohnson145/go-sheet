@@ -137,7 +137,7 @@ resources:
   current: 5
   max: 5
 - name: Wand of Web Charges
-  current: 3
+  current: 4
   max: 4
 allskills:
 - name: Acrobatics
