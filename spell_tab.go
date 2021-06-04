@@ -41,27 +41,37 @@ func (s *sheet) spellTab() fyne.CanvasObject {
 }
 
 func (s *sheet) spellSection(name string) fyne.CanvasObject {
-	titleRow := []fyne.CanvasObject{
-		widget.NewLabel(name),
-		layout.NewSpacer(),
+	var titleRow []fyne.CanvasObject
+	if name == Cantrips {
+		titleRow = []fyne.CanvasObject{
+			widget.NewLabel(name),
+			layout.NewSpacer(),
+		}
+	} else {
+		btn := widget.NewButton(
+			name,
+			func() {
+				s.character.Spells[name].Slots -= 1
+				s.writeReadCharacter()
+			},
+		)
+		if s.character.Spells[name].Slots == 0 {
+			btn.Disable()
+		}
+		titleRow = []fyne.CanvasObject{btn, layout.NewSpacer()}
+		titleRow = s.addSlotInfo(titleRow, *s.character.Spells[name])
 	}
-	section := s.character.Spells[name]
-
-	if name != Cantrips {
-		titleRow = s.addSlotInfo(titleRow, section)
-	}
-
 	return fyne.NewContainerWithLayout(
 		layout.NewVBoxLayout(),
 		fyne.NewContainerWithLayout(
 			layout.NewHBoxLayout(),
 			titleRow...,
 		),
-		s.spellAccordion(section.Spells),
+		s.spellAccordion(s.character.Spells[name].Spells),
 	)
 }
 
-func (s *sheet) addSlotInfo(row []fyne.CanvasObject, section SpellSecion) []fyne.CanvasObject {
+func (s *sheet) addSlotInfo(row []fyne.CanvasObject, section SpellSection) []fyne.CanvasObject {
 	for i := 1; i <= section.MaxSlots; i++ {
 		if i <= section.Slots {
 			row = append(row, widget.NewIcon(theme.RadioButtonCheckedIcon()))

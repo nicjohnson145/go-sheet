@@ -24,34 +24,34 @@ const (
 )
 
 type Character struct {
-	Name              string                 `yaml:"name"`
-	Class             string                 `yaml:"class"`
-	Race              string                 `yaml:"race"`
-	Background        string                 `yaml:"background"`
-	Alignment         string                 `yaml:"alignment"`
-	PersonalityTraits string                 `yaml:"personality-traits"`
-	Ideals            string                 `yaml:"ideals"`
-	Bonds             string                 `yaml:"bonds"`
-	Flaws             string                 `yaml:"flaws"`
-	Level             int                    `yaml:"level"`
-	Attributes        *Attributes            `yaml:"attributes"`
-	Proficiency       int                    `yaml:"proficiency"`
-	Proficiencies     Proficiencies          `yaml:"proficiencies"`
-	Expertise         Expertise              `yaml:"expertise"`
-	Languages         []string               `yaml:"languages"`
-	SavingThrows      []string               `yaml:"saving-throws"`
-	Skills            []string               `yaml:"skills"`
-	ArmorClass        int                    `yaml:"armor-class"`
-	Speed             int                    `yaml:"speed"`
-	HitPoints         *HitPoints             `yaml:"hit-points"`
-	HitDice           *HitDice               `yaml:"hit-dice"`
-	Weapons           []*Weapon              `yaml:"weapons"`
-	Equipment         []*CountableItem       `yaml:"equipment"`
-	Consumables       []*CountableItem       `yaml:"consumables"`
-	Features          []*Item                `yaml:"features"`
-	Spells            map[string]SpellSecion `yaml:"spells"`
-	Loot              []*CountableItem       `yaml:"loot"`
-	Resources         []*Resource            `yaml:"resources"`
+	Name              string                   `yaml:"name"`
+	Class             string                   `yaml:"class"`
+	Race              string                   `yaml:"race"`
+	Background        string                   `yaml:"background"`
+	Alignment         string                   `yaml:"alignment"`
+	PersonalityTraits string                   `yaml:"personality-traits"`
+	Ideals            string                   `yaml:"ideals"`
+	Bonds             string                   `yaml:"bonds"`
+	Flaws             string                   `yaml:"flaws"`
+	Level             int                      `yaml:"level"`
+	Attributes        *Attributes              `yaml:"attributes"`
+	Proficiency       int                      `yaml:"proficiency"`
+	Proficiencies     Proficiencies            `yaml:"proficiencies"`
+	Expertise         Expertise                `yaml:"expertise"`
+	Languages         []string                 `yaml:"languages"`
+	SavingThrows      []string                 `yaml:"saving-throws"`
+	Skills            []string                 `yaml:"skills"`
+	ArmorClass        int                      `yaml:"armor-class"`
+	Speed             int                      `yaml:"speed"`
+	HitPoints         *HitPoints               `yaml:"hit-points"`
+	HitDice           *HitDice                 `yaml:"hit-dice"`
+	Weapons           []*Weapon                `yaml:"weapons"`
+	Equipment         []*CountableItem         `yaml:"equipment"`
+	Consumables       []*CountableItem         `yaml:"consumables"`
+	Features          []*Item                  `yaml:"features"`
+	Spells            map[string]*SpellSection `yaml:"spells"`
+	Loot              []*CountableItem         `yaml:"loot"`
+	Resources         []*Resource              `yaml:"resources"`
 	AllSkills         []Skill
 	AllSavingThrows   []string
 }
@@ -87,16 +87,40 @@ type HitPoints struct {
 	Temp    int `yaml:"temp"`
 }
 
+func (h *HitPoints) SetVal(new int) {
+	h.Current = new
+}
+
+func (h *HitPoints) CurrentVal() int {
+	return h.Current
+}
+
 type HitDice struct {
 	Current int    `yaml:"current"`
 	Max     int    `yaml:"max"`
 	Dice    string `yaml:"dice"`
 }
 
+func (h *HitDice) SetVal(new int) {
+	h.Current = new
+}
+
+func (h *HitDice) CurrentVal() int {
+	return h.Current
+}
+
 type Resource struct {
 	Name    string `yaml:"name"`
 	Current int    `yaml:"current"`
 	Max     int    `yaml:"max"`
+}
+
+func (r *Resource) SetVal(new int) {
+	r.Current = new
+}
+
+func (r *Resource) CurrentVal() int {
+	return r.Current
 }
 
 type Weapon struct {
@@ -143,10 +167,18 @@ type Spell struct {
 	Desc          string   `yaml:"desc"`
 }
 
-type SpellSecion struct {
+type SpellSection struct {
 	Slots    int      `yaml:"slots"`
 	MaxSlots int      `yaml:"max-slots"`
 	Spells   []*Spell `yaml:"spells"`
+}
+
+func (s *SpellSection) SetVal(new int) {
+	s.Slots = new
+}
+
+func (s *SpellSection) CurrentVal() int {
+	return s.Slots
 }
 
 func (c *Character) setDefaultData() {
