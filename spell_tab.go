@@ -41,23 +41,38 @@ func (s *sheet) spellTab() fyne.CanvasObject {
 }
 
 func (s *sheet) spellSection(name string) fyne.CanvasObject {
-	titleRow := []fyne.CanvasObject{
-		widget.NewLabel(name),
-		layout.NewSpacer(),
+	var titleRow []fyne.CanvasObject
+	if name == Cantrips {
+		titleRow = []fyne.CanvasObject{
+			widget.NewLabel(name),
+			layout.NewSpacer(),
+		}
+	} else {
+		titleRow = []fyne.CanvasObject{
+			widget.NewButton(
+				name,
+				func() {
+					showAddRemoveSetCancelModal(
+						s.window.Canvas(),
+						AddRemoveSetCancelConfig{
+							Label: "Adjust Slots",
+							Current: s.character.Spells[name],
+							WriteFunc: func() { s.writeReadCharacter() },
+						},
+					)
+				},
+			),
+			layout.NewSpacer(),
+		}
+		titleRow = s.addSlotInfo(titleRow, *s.character.Spells[name])
 	}
-	section := s.character.Spells[name]
-
-	if name != Cantrips {
-		titleRow = s.addSlotInfo(titleRow, section)
-	}
-
 	return fyne.NewContainerWithLayout(
 		layout.NewVBoxLayout(),
 		fyne.NewContainerWithLayout(
 			layout.NewHBoxLayout(),
 			titleRow...,
 		),
-		s.spellAccordion(section.Spells),
+		s.spellAccordion(s.character.Spells[name].Spells),
 	)
 }
 

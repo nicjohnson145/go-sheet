@@ -24,34 +24,34 @@ const (
 )
 
 type Character struct {
-	Name              string                 `yaml:"name"`
-	Class             string                 `yaml:"class"`
-	Race              string                 `yaml:"race"`
-	Background        string                 `yaml:"background"`
-	Alignment         string                 `yaml:"alignment"`
-	PersonalityTraits string                 `yaml:"personality-traits"`
-	Ideals            string                 `yaml:"ideals"`
-	Bonds             string                 `yaml:"bonds"`
-	Flaws             string                 `yaml:"flaws"`
-	Level             int                    `yaml:"level"`
-	Attributes        *Attributes            `yaml:"attributes"`
-	Proficiency       int                    `yaml:"proficiency"`
-	Proficiencies     Proficiencies          `yaml:"proficiencies"`
-	Expertise         Expertise              `yaml:"expertise"`
-	Languages         []string               `yaml:"languages"`
-	SavingThrows      []string               `yaml:"saving-throws"`
-	Skills            []string               `yaml:"skills"`
-	ArmorClass        int                    `yaml:"armor-class"`
-	Speed             int                    `yaml:"speed"`
-	HitPoints         *HitPoints             `yaml:"hit-points"`
-	HitDice           *HitDice               `yaml:"hit-dice"`
-	Weapons           []*Weapon              `yaml:"weapons"`
-	Equipment         []*CountableItem       `yaml:"equipment"`
-	Consumables       []*CountableItem       `yaml:"consumables"`
-	Features          []*Item                `yaml:"features"`
-	Spells            map[string]SpellSection `yaml:"spells"`
-	Loot              []*CountableItem       `yaml:"loot"`
-	Resources         []*Resource            `yaml:"resources"`
+	Name              string                   `yaml:"name"`
+	Class             string                   `yaml:"class"`
+	Race              string                   `yaml:"race"`
+	Background        string                   `yaml:"background"`
+	Alignment         string                   `yaml:"alignment"`
+	PersonalityTraits string                   `yaml:"personality-traits"`
+	Ideals            string                   `yaml:"ideals"`
+	Bonds             string                   `yaml:"bonds"`
+	Flaws             string                   `yaml:"flaws"`
+	Level             int                      `yaml:"level"`
+	Attributes        *Attributes              `yaml:"attributes"`
+	Proficiency       int                      `yaml:"proficiency"`
+	Proficiencies     Proficiencies            `yaml:"proficiencies"`
+	Expertise         Expertise                `yaml:"expertise"`
+	Languages         []string                 `yaml:"languages"`
+	SavingThrows      []string                 `yaml:"saving-throws"`
+	Skills            []string                 `yaml:"skills"`
+	ArmorClass        int                      `yaml:"armor-class"`
+	Speed             int                      `yaml:"speed"`
+	HitPoints         *HitPoints               `yaml:"hit-points"`
+	HitDice           *HitDice                 `yaml:"hit-dice"`
+	Weapons           []*Weapon                `yaml:"weapons"`
+	Equipment         []*CountableItem         `yaml:"equipment"`
+	Consumables       []*CountableItem         `yaml:"consumables"`
+	Features          []*Item                  `yaml:"features"`
+	Spells            map[string]*SpellSection `yaml:"spells"`
+	Loot              []*CountableItem         `yaml:"loot"`
+	Resources         []*Resource              `yaml:"resources"`
 	AllSkills         []Skill
 	AllSavingThrows   []string
 }
@@ -171,6 +171,14 @@ type SpellSection struct {
 	Slots    int      `yaml:"slots"`
 	MaxSlots int      `yaml:"max-slots"`
 	Spells   []*Spell `yaml:"spells"`
+}
+
+func (s *SpellSection) SetVal(new int) {
+	s.Slots = new
+}
+
+func (s *SpellSection) CurrentVal() int {
+	return s.Slots
 }
 
 func (c *Character) setDefaultData() {
