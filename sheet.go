@@ -10,7 +10,6 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
@@ -130,12 +129,7 @@ func (s *sheet) basicStats() fyne.CanvasObject {
 				widget.NewSeparator(),
 				s.healthButton(),
 				widget.NewSeparator(),
-				widget.NewLabel(fmt.Sprintf(
-					"Hit Dice (%v): %v / %v",
-					s.character.HitDice.Dice,
-					s.character.HitDice.Current,
-					s.character.HitDice.Max,
-				)),
+				s.hitDiceButton(),
 			),
 		),
 		fyne.NewContainerWithLayout(
@@ -159,28 +153,34 @@ func (s *sheet) healthButton() fyne.CanvasObject {
 	return widget.NewButton(
 		fmt.Sprintf("HP: %v / %v", s.character.HitPoints.Current, s.character.HitPoints.Max),
 		func() {
-			e := widget.NewEntry()
-			dialog.ShowCustomConfirm(
-				"Adjust Health",
-				"Heal",
-				"Damage",
-				e,
-				func(b bool) {
-					val, err := strconv.Atoi(e.Text)
-					if err != nil {
-						fmt.Println(err)
-						return
-					}
-					if b {
-						s.character.HitPoints.Current += val
-						fmt.Println(fmt.Sprintf("Healing for %v", val))
-					} else {
-						s.character.HitPoints.Current -= val
-						fmt.Println(fmt.Sprintf("Taking %v damage", e.Text))
-					}
-					s.writeReadCharacter()
+			showAddRemoveSetCancelModal(
+				s.window.Canvas(),
+				AddRemoveSetCancelConfig{
+					Label: "Adjust Health",
+					Current: s.character.HitPoints,
+					WriteFunc: func() { s.writeReadCharacter() },
 				},
-				s.window,
+			)
+		},
+	)
+}
+
+func (s *sheet) hitDiceButton() fyne.CanvasObject {
+	return widget.NewButton(
+		fmt.Sprintf(
+			"Hit Dice (%v): %v / %v",
+			s.character.HitDice.Dice,
+			s.character.HitDice.Current,
+			s.character.HitDice.Max,
+		),
+		func() {
+			showAddRemoveSetCancelModal(
+				s.window.Canvas(),
+				AddRemoveSetCancelConfig{
+					Label: "HitDice",
+					Current: s.character.HitDice,
+					WriteFunc: func() { s.writeReadCharacter() },
+				},
 			)
 		},
 	)

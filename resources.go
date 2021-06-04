@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
@@ -33,7 +32,7 @@ func (s *sheet) resourceRow(resource Resource, idx int) fyne.CanvasObject {
 		layout.NewHBoxLayout(),
 		widget.NewButton(
 			resource.Name,
-			func() { s.onResourceTap(resource, idx) },
+			func() { s.onResourceTap(idx) },
 		),
 		layout.NewSpacer(),
 		widget.NewLabel(fmt.Sprintf("%v / %v", resource.Current, resource.Max)),
@@ -41,55 +40,13 @@ func (s *sheet) resourceRow(resource Resource, idx int) fyne.CanvasObject {
 }
 
 
-func (s *sheet) onResourceTap(resource Resource, idx int) {
-	e := widget.NewEntry()
-	modal := widget.NewModalPopUp(nil, s.window.Canvas())
-	content := fyne.NewContainerWithLayout(
-		layout.NewVBoxLayout(),
-		widget.NewLabel(fmt.Sprintf("Adjust %v", resource.Name)),
-		e,
-		fyne.NewContainerWithLayout(
-			layout.NewCenterLayout(),
-			fyne.NewContainerWithLayout(
-				layout.NewHBoxLayout(),
-				widget.NewButton(
-					"Remove",
-					func() {
-						val, err := strconv.Atoi(e.Text)
-						if err != nil {
-							fmt.Println(err)
-							return
-						}
-						s.character.Resources[idx].Current -= val
-						s.writeReadCharacter()
-						modal.Hide()
-					},
-				),
-				widget.NewButton(
-					"Add",
-					func() {
-						val, err := strconv.Atoi(e.Text)
-						if err != nil {
-							fmt.Println(err)
-							return
-						}
-						s.character.Resources[idx].Current += val
-						s.writeReadCharacter()
-						modal.Hide()
-					},
-				),
-			),
-		),
-		fyne.NewContainerWithLayout(
-			layout.NewCenterLayout(),
-			widget.NewButton(
-				"Cancel",
-				func() {
-					modal.Hide()
-				},
-			),
-		),
+func (s *sheet) onResourceTap(idx int) {
+	showAddRemoveSetCancelModal(
+		s.window.Canvas(),
+		AddRemoveSetCancelConfig{
+			Label: fmt.Sprintf("Adjust %v", s.character.Resources[idx].Name),
+			Current: s.character.Resources[idx],
+			WriteFunc: func() { s.writeReadCharacter() },
+		},
 	)
-	modal.Content = content
-	modal.Show()
 }

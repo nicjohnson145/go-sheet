@@ -87,16 +87,40 @@ type HitPoints struct {
 	Temp    int `yaml:"temp"`
 }
 
+func (h *HitPoints) SetVal(new int) {
+	h.Current = new
+}
+
+func (h *HitPoints) CurrentVal() int {
+	return h.Current
+}
+
 type HitDice struct {
 	Current int    `yaml:"current"`
 	Max     int    `yaml:"max"`
 	Dice    string `yaml:"dice"`
 }
 
+func (h *HitDice) SetVal(new int) {
+	h.Current = new
+}
+
+func (h *HitDice) CurrentVal() int {
+	return h.Current
+}
+
 type Resource struct {
 	Name    string `yaml:"name"`
 	Current int    `yaml:"current"`
 	Max     int    `yaml:"max"`
+}
+
+func (r *Resource) SetVal(new int) {
+	r.Current = new
+}
+
+func (r *Resource) CurrentVal() int {
+	return r.Current
 }
 
 type Weapon struct {
