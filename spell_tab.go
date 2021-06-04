@@ -48,22 +48,17 @@ func (s *sheet) spellSection(name string) fyne.CanvasObject {
 			layout.NewSpacer(),
 		}
 	} else {
-		titleRow = []fyne.CanvasObject{
-			widget.NewButton(
-				name,
-				func() {
-					showAddRemoveSetCancelModal(
-						s.window.Canvas(),
-						AddRemoveSetCancelConfig{
-							Label: "Adjust Slots",
-							Current: s.character.Spells[name],
-							WriteFunc: func() { s.writeReadCharacter() },
-						},
-					)
-				},
-			),
-			layout.NewSpacer(),
+		btn := widget.NewButton(
+			name,
+			func() {
+				s.character.Spells[name].Slots -= 1
+				s.writeReadCharacter()
+			},
+		)
+		if s.character.Spells[name].Slots == 0 {
+			btn.Disable()
 		}
+		titleRow = []fyne.CanvasObject{btn, layout.NewSpacer()}
 		titleRow = s.addSlotInfo(titleRow, *s.character.Spells[name])
 	}
 	return fyne.NewContainerWithLayout(
