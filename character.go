@@ -49,7 +49,7 @@ type Character struct {
 	Equipment         []*CountableItem       `yaml:"equipment"`
 	Consumables       []*CountableItem       `yaml:"consumables"`
 	Features          []*Item                `yaml:"features"`
-	Spells            map[string]SpellSecion `yaml:"spells"`
+	Spells            map[string]SpellSection `yaml:"spells"`
 	Loot              []*CountableItem       `yaml:"loot"`
 	Resources         []*Resource            `yaml:"resources"`
 	AllSkills         []Skill
@@ -167,7 +167,7 @@ type Spell struct {
 	Desc          string   `yaml:"desc"`
 }
 
-type SpellSecion struct {
+type SpellSection struct {
 	Slots    int      `yaml:"slots"`
 	MaxSlots int      `yaml:"max-slots"`
 	Spells   []*Spell `yaml:"spells"`

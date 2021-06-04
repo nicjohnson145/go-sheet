@@ -61,7 +61,7 @@ func (s *sheet) spellSection(name string) fyne.CanvasObject {
 	)
 }
 
-func (s *sheet) addSlotInfo(row []fyne.CanvasObject, section SpellSecion) []fyne.CanvasObject {
+func (s *sheet) addSlotInfo(row []fyne.CanvasObject, section SpellSection) []fyne.CanvasObject {
 	for i := 1; i <= section.MaxSlots; i++ {
 		if i <= section.Slots {
 			row = append(row, widget.NewIcon(theme.RadioButtonCheckedIcon()))
