@@ -156,8 +156,8 @@ func (s *sheet) healthButton() fyne.CanvasObject {
 			showAddRemoveSetCancelModal(
 				s.window.Canvas(),
 				AddRemoveSetCancelConfig{
-					Label: "Adjust Health",
-					Current: s.character.HitPoints,
+					Label:     "Adjust Health",
+					Current:   s.character.HitPoints,
 					WriteFunc: func() { s.writeReadCharacter() },
 				},
 			)
@@ -177,8 +177,8 @@ func (s *sheet) hitDiceButton() fyne.CanvasObject {
 			showAddRemoveSetCancelModal(
 				s.window.Canvas(),
 				AddRemoveSetCancelConfig{
-					Label: "HitDice",
-					Current: s.character.HitDice,
+					Label:     "HitDice",
+					Current:   s.character.HitDice,
 					WriteFunc: func() { s.writeReadCharacter() },
 				},
 			)

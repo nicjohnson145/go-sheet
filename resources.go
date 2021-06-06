@@ -39,13 +39,12 @@ func (s *sheet) resourceRow(resource Resource, idx int) fyne.CanvasObject {
 	)
 }
 
-
 func (s *sheet) onResourceTap(idx int) {
 	showAddRemoveSetCancelModal(
 		s.window.Canvas(),
 		AddRemoveSetCancelConfig{
-			Label: fmt.Sprintf("Adjust %v", s.character.Resources[idx].Name),
-			Current: s.character.Resources[idx],
+			Label:     fmt.Sprintf("Adjust %v", s.character.Resources[idx].Name),
+			Current:   s.character.Resources[idx],
 			WriteFunc: func() { s.writeReadCharacter() },
 		},
 	)
