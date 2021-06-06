@@ -5,7 +5,7 @@ bonuses to attack/save/etc calculated.
 
 ### Building and Running
 
-There are pre-compiled binaries for Linux, Windows, & Mac
+There are pre-compiled binaries for Linux and Windows
 [here](https://github.com/nicjohnson145/go-sheet/releases/latest). Or optionally clone this repo and
 run `go build`
 

@@ -16,6 +16,18 @@ type AddRemoveSetCancelConfig struct {
 	WriteFunc func()
 }
 
+type SetableWrap struct {
+	Current *int
+}
+
+func (s *SetableWrap) SetVal(i int) {
+	*s.Current = i
+}
+
+func (s *SetableWrap) CurrentVal() int {
+	return *s.Current
+}
+
 type Setable interface {
 	SetVal(int)
 	CurrentVal() int

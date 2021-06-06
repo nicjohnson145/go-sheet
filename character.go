@@ -48,6 +48,7 @@ type Character struct {
 	Weapons           []*Weapon                `yaml:"weapons"`
 	Equipment         []*CountableItem         `yaml:"equipment"`
 	Consumables       []*CountableItem         `yaml:"consumables"`
+	Currency          *Currency                `yaml:"currency"`
 	Features          []*Item                  `yaml:"features"`
 	Spells            map[string]*SpellSection `yaml:"spells"`
 	Loot              []*CountableItem         `yaml:"loot"`
@@ -154,6 +155,14 @@ type CountableItem struct {
 	Name  string `yaml:"name"`
 	Desc  string `yaml:"desc"`
 	Count int    `yaml:"count"`
+}
+
+type Currency struct {
+	Copper   int `yaml:"copper"`
+	Silver   int `yaml:"silver"`
+	Electrum int `yaml:"electrum"`
+	Gold     int `yaml:"gold"`
+	Platinum int `yaml:"platinum"`
 }
 
 type Spell struct {

@@ -87,6 +87,11 @@ consumables:
     desc: >
       You regain 2d4 + 2 hit points when you drink this potion. The potions red liquid glimmers when
       agitated
+currency:
+  gold: 10
+  silver: 5
+  platinum: 1
+  copper: 0
 personality-traits: >
   this is where they go
 ideals: >
