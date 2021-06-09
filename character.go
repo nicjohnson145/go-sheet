@@ -53,8 +53,8 @@ type Character struct {
 	Spells            map[string]*SpellSection `yaml:"spells"`
 	Loot              []*CountableItem         `yaml:"loot"`
 	Resources         []*Resource              `yaml:"resources"`
-	AllSkills         []Skill
-	AllSavingThrows   []string
+	AllSkills         []Skill                  `yaml:"-"`
+	AllSavingThrows   []string                 `yaml:"-"`
 }
 
 type Attributes struct {
@@ -331,6 +331,10 @@ func persistCharacter(c Character, path string) error {
 	data, err := yaml.Marshal(c)
 	if err != nil {
 		return err
+	}
+
+	if path == "" {
+		return nil
 	}
 
 	return ioutil.WriteFile(path, data, 0664)
