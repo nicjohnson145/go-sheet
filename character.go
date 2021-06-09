@@ -333,5 +333,9 @@ func persistCharacter(c Character, path string) error {
 		return err
 	}
 
+	if path == "" {
+		return nil
+	}
+
 	return ioutil.WriteFile(path, data, 0664)
 }
