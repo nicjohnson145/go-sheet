@@ -53,8 +53,8 @@ type Character struct {
 	Spells            map[string]*SpellSection `yaml:"spells"`
 	Loot              []*CountableItem         `yaml:"loot"`
 	Resources         []*Resource              `yaml:"resources"`
-	AllSkills         []Skill
-	AllSavingThrows   []string
+	AllSkills         []Skill                  `yaml:"-"`
+	AllSavingThrows   []string                 `yaml:"-"`
 }
 
 type Attributes struct {
