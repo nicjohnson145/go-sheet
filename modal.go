@@ -48,7 +48,13 @@ func showAddRemoveSetCancelModal(canvas fyne.Canvas, conf AddRemoveSetCancelConf
 				widget.NewButton(
 					"Remove",
 					func() {
-						val, err := strconv.Atoi(entry.Text)
+						var val int
+						var err error
+						if entry.Text == "" {
+							val = 1
+						} else {
+							val, err = strconv.Atoi(entry.Text)
+						}
 						if err != nil {
 							fmt.Println(err)
 							return
@@ -74,7 +80,13 @@ func showAddRemoveSetCancelModal(canvas fyne.Canvas, conf AddRemoveSetCancelConf
 				widget.NewButton(
 					"Add",
 					func() {
-						val, err := strconv.Atoi(entry.Text)
+						var val int
+						var err error
+						if entry.Text == "" {
+							val = 1
+						} else {
+							val, err = strconv.Atoi(entry.Text)
+						}
 						if err != nil {
 							fmt.Println(err)
 							return
