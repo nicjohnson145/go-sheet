@@ -50,6 +50,7 @@ type Character struct {
 	Consumables       []*CountableItem         `yaml:"consumables"`
 	Currency          *Currency                `yaml:"currency"`
 	Features          []*Item                  `yaml:"features"`
+	SpellReset        string                   `yaml:"spell-reset"`
 	Spells            map[string]*SpellSection `yaml:"spells"`
 	Loot              []*CountableItem         `yaml:"loot"`
 	Resources         []*Resource              `yaml:"resources"`
@@ -111,9 +112,10 @@ func (h *HitDice) CurrentVal() int {
 }
 
 type Resource struct {
-	Name    string `yaml:"name"`
-	Current int    `yaml:"current"`
-	Max     int    `yaml:"max"`
+	Name     string `yaml:"name"`
+	Current  int    `yaml:"current"`
+	Max      int    `yaml:"max"`
+	ResetsOn string `yaml:"resets-on"`
 }
 
 func (r *Resource) SetVal(new int) {

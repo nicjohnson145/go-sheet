@@ -41,6 +41,7 @@ func (s *sheet) loadSheet() error {
 
 func (s *sheet) loadUI(app fyne.App) {
 	s.window = app.NewWindow("Go-Sheet")
+	s.createMenuBar()
 	s.setMainWinContent()
 
 	go func() {
@@ -114,6 +115,26 @@ func (s *sheet) setMainWinContent() {
 			//),
 		),
 	)
+}
+
+func (s *sheet) createMenuBar() {
+	menu := fyne.NewMainMenu(
+		fyne.NewMenu(
+			"File",
+		),
+		fyne.NewMenu(
+			"Rest",
+			fyne.NewMenuItem("Short Rest", func() {
+				s.shortRest()
+				s.writeReadCharacter()
+			}),
+			fyne.NewMenuItem("Long Rest", func() {
+				s.longRest()
+				s.writeReadCharacter()
+			}),
+		),
+	)
+	s.window.SetMainMenu(menu)
 }
 
 func (s *sheet) basicStats() fyne.CanvasObject {

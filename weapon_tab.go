@@ -24,9 +24,11 @@ func (s *sheet) weaponsTab() fyne.CanvasObject {
 func (s *sheet) weaponAccordionItem(w Weapon) *widget.AccordionItem {
 	return widget.NewAccordionItem(
 		fmt.Sprintf(
-			"%v (%v)",
+			"%v (%v) [%v%v]",
 			w.Name,
 			s.character.modStringForWeapon(w),
+			w.Damage.Dice,
+			s.character.modString(s.character.calcMod(s.character.attrForString(w.Attribute))),
 		),
 		s.weaponAccordionContent(w),
 	)
