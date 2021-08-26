@@ -77,6 +77,15 @@ weapons:
     A lengthy straight blade designed for slashing foes, the longsword is a highly versatile weapon that may also be wielded with two hands for more punishing strikes.
   proficient: false
   range: ""
+- name: +1 Bow
+  attribute: dexterity
+  damage:
+    dice: 1d8
+    type: piercing
+    additional-damage: 1
+  additional-to-hit: 1
+  proficient: true
+  range: 60/120 ft
 equipment:
 - name: Hat of Disguise
   desc: |

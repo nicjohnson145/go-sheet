@@ -165,6 +165,7 @@ func (s *sheet) basicStats() fyne.CanvasObject {
 				s.attributeBlock("Cha", s.character.Attributes.Charisma),
 				s.basicCard("AC", strconv.Itoa(s.character.ArmorClass)),
 				s.basicCard("Proficiency", fmt.Sprintf("+%v", s.character.Proficiency)),
+				s.basicCard("Speed", strconv.Itoa(s.character.Speed)),
 			),
 		),
 	)

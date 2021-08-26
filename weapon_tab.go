@@ -28,7 +28,7 @@ func (s *sheet) weaponAccordionItem(w Weapon) *widget.AccordionItem {
 			w.Name,
 			s.character.modStringForWeapon(w),
 			w.Damage.Dice,
-			s.character.modString(s.character.calcMod(s.character.attrForString(w.Attribute))),
+			s.character.modString(s.character.calcMod(s.character.attrForString(w.Attribute)) + w.Damage.AdditionalDamage),
 		),
 		s.weaponAccordionContent(w),
 	)
