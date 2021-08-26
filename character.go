@@ -127,13 +127,14 @@ func (r *Resource) CurrentVal() int {
 }
 
 type Weapon struct {
-	Name       string   `yaml:"name"`
-	Attribute  string   `yaml:"attribute"`
-	Damage     *Damage  `yaml:"damage"`
-	Properties []string `yaml:"properties"`
-	Desc       string   `yaml:"desc"`
-	Proficient bool     `yaml:"proficient"`
-	Range      string   `yaml:"range"`
+	Name            string   `yaml:"name"`
+	Attribute       string   `yaml:"attribute"`
+	Damage          *Damage  `yaml:"damage"`
+	Properties      []string `yaml:"properties"`
+	Desc            string   `yaml:"desc"`
+	Proficient      bool     `yaml:"proficient"`
+	Range           string   `yaml:"range"`
+	AdditionalToHit int      `yaml:"additional-to-hit,omitempty"`
 }
 
 func (w Weapon) GetRange() string {
@@ -144,8 +145,9 @@ func (w Weapon) GetRange() string {
 }
 
 type Damage struct {
-	Dice string `yaml:"dice"`
-	Type string `yaml:"type"`
+	Dice             string `yaml:"dice"`
+	Type             string `yaml:"type"`
+	AdditionalDamage int    `yaml:"additional-damage,omitempty"`
 }
 
 type Item struct {
@@ -257,7 +259,7 @@ func (c *Character) modStringForSave(save string) string {
 }
 
 func (c *Character) modStringForWeapon(w Weapon) string {
-	mod := c.calcMod(c.attrForString(w.Attribute))
+	mod := c.calcMod(c.attrForString(w.Attribute)) + w.AdditionalToHit
 	if w.Proficient {
 		mod += c.Proficiency
 	}
