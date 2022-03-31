@@ -28,8 +28,8 @@ func (s *sheet) skills() fyne.CanvasObject {
 			fyne.NewContainerWithLayout(
 				layout.NewHBoxLayout(),
 				profWidget(func() bool { return s.character.isProficientInSkill(skill) }),
-				widget.NewLabel(skill.Name),
 				widget.NewLabel(s.character.modStringForSkill(skill)),
+				widget.NewLabel(skill.Name),
 			),
 		)
 	}
@@ -52,8 +52,8 @@ func (s *sheet) saves() fyne.CanvasObject {
 			fyne.NewContainerWithLayout(
 				layout.NewHBoxLayout(),
 				profWidget(func() bool { return s.character.isProficientInSave(save) }),
-				widget.NewLabel(save),
 				widget.NewLabel(s.character.modStringForSave(save)),
+				widget.NewLabel(save),
 			),
 		)
 	}
