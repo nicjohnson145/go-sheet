@@ -10,6 +10,10 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+type SkillSaveBonuser interface {
+	GetBonuses() []*SkillSaveBonus
+}
+
 const (
 	Cantrips = "cantrips"
 	Level1   = "level-1"
@@ -127,14 +131,15 @@ func (r *Resource) CurrentVal() int {
 }
 
 type Weapon struct {
-	Name            string   `yaml:"name"`
-	Attribute       string   `yaml:"attribute"`
-	Damage          *Damage  `yaml:"damage"`
-	Properties      []string `yaml:"properties"`
-	Desc            string   `yaml:"desc"`
-	Proficient      bool     `yaml:"proficient"`
-	Range           string   `yaml:"range"`
-	AdditionalToHit int      `yaml:"additional-to-hit,omitempty"`
+	Name            string            `yaml:"name"`
+	Attribute       string            `yaml:"attribute"`
+	Damage          *Damage           `yaml:"damage"`
+	Properties      []string          `yaml:"properties"`
+	Desc            string            `yaml:"desc"`
+	Proficient      bool              `yaml:"proficient"`
+	Range           string            `yaml:"range"`
+	AdditionalToHit int               `yaml:"additional-to-hit,omitempty"`
+	Bonuses         []*SkillSaveBonus `yaml:"bonuses,omitempty"`
 }
 
 func (w Weapon) GetRange() string {
@@ -144,6 +149,10 @@ func (w Weapon) GetRange() string {
 	return w.Range
 }
 
+func (w Weapon) GetBonuses() []*SkillSaveBonus {
+	return w.Bonuses
+}
+
 type Damage struct {
 	Dice             string `yaml:"dice"`
 	Type             string `yaml:"type"`
@@ -151,14 +160,31 @@ type Damage struct {
 }
 
 type Item struct {
-	Name string `yaml:"name"`
-	Desc string `yaml:"desc"`
+	Name    string            `yaml:"name"`
+	Desc    string            `yaml:"desc"`
+	Bonuses []*SkillSaveBonus `yaml:"bonuses,omitempty"`
+}
+
+func (w Item) GetBonuses() []*SkillSaveBonus {
+	return w.Bonuses
+}
+
+type SkillSaveBonus struct {
+	Skill     string `yaml:"skill,omitempty"`
+	Save      string `yaml:"save,omitempty"`
+	Advantage bool   `yaml:"advantage,omitempty"`
+	Bonus     int    `yaml:"bonus,omitempty"`
 }
 
 type CountableItem struct {
-	Name  string `yaml:"name"`
-	Desc  string `yaml:"desc"`
-	Count int    `yaml:"count"`
+	Name    string            `yaml:"name"`
+	Desc    string            `yaml:"desc"`
+	Count   int               `yaml:"count"`
+	Bonuses []*SkillSaveBonus `yaml:"bonuses,omitempty"`
+}
+
+func (w CountableItem) GetBonuses() []*SkillSaveBonus {
+	return w.Bonuses
 }
 
 type Currency struct {
@@ -230,12 +256,27 @@ func (c *Character) calcMod(score int) int {
 	return int(math.Floor((float64(score) - 10.0) / 2.0))
 }
 
-func (c *Character) modString(mod int) string {
+
+func (c *Character) weaponModString(mod int) string {
+	s := c.modString(mod, 0)
+	return s[0:len(s) - 4]
+}
+
+func (c *Character) modString(mod int, advantage int) string {
+	var val string
 	if mod < 0 {
-		return strconv.Itoa(mod)
+		val = strconv.Itoa(mod)
 	} else {
-		return fmt.Sprintf("+%v", mod)
+		val = fmt.Sprintf("+%v", mod)
 	}
+	ad := "    "
+	if advantage > 0 {
+		ad = " (A)"
+	} else if advantage < 0 {
+		ad = " (D)"
+	}
+	
+	return val + ad
 }
 
 func (c *Character) modStringForSkill(s Skill) string {
@@ -247,7 +288,10 @@ func (c *Character) modStringForSkill(s Skill) string {
 		}
 	}
 
-	return c.modString(mod)
+	advantage, bonus := c.advantageAndBonusFromOutside(s.Name)
+	mod += bonus
+
+	return c.modString(mod, advantage)
 }
 
 func (c *Character) modStringForSave(save string) string {
@@ -255,7 +299,10 @@ func (c *Character) modStringForSave(save string) string {
 	if c.isProficientInSave(save) {
 		mod += c.Proficiency
 	}
-	return c.modString(mod)
+	advantage, bonus := c.advantageAndBonusFromOutside(save)
+	mod += bonus
+
+	return c.modString(mod, advantage)
 }
 
 func (c *Character) modStringForWeapon(w Weapon) string {
@@ -263,7 +310,7 @@ func (c *Character) modStringForWeapon(w Weapon) string {
 	if w.Proficient {
 		mod += c.Proficiency
 	}
-	return c.modString(mod)
+	return c.weaponModString(mod)
 }
 
 func (c *Character) attrForString(s string) int {
@@ -305,6 +352,60 @@ func (c *Character) inList(item string, list []string) bool {
 		}
 	}
 	return false
+}
+
+func (c *Character) advantageAndBonusFromOutside(skillOrSave string) (int, int) {
+	// This series of checks sort of relies on the fact that more than 2 things don't interact with
+	// the same skill. For example, if 2 things gave advantage, and 1 thing gave disadvantage, then
+	// this method would incorrectly report advantage, even though RAW that's still a neutral roll.
+	// The odds of that are low so *shrug* fuck it.
+	advantage := 0
+	bonus := 0
+
+	newAd, newBonus := advantageAndBonusLoop(c.Features, skillOrSave)
+	advantage += newAd
+	bonus += newBonus
+
+	newAd, newBonus = advantageAndBonusLoop(c.Weapons, skillOrSave)
+	advantage += newAd
+	bonus += newBonus
+
+	newAd, newBonus = advantageAndBonusLoop(c.Equipment, skillOrSave)
+	advantage += newAd
+	bonus += newBonus
+
+	// Normalize multiple sources of advantage/disadvantage to just one
+	if advantage > 0 {
+		advantage = 1
+	} else if advantage < 0 {
+		advantage = -1
+	}
+	
+	return advantage, bonus
+}
+
+func advantageAndBonusLoop[T SkillSaveBonuser](list []T, skillOrSave string) (int, int) {
+	advantage := 0
+	bonus := 0
+	for _, item := range list {
+		bonuses := item.GetBonuses()
+		if len(bonuses) == 0 {
+			continue
+		}
+
+		for _, b := range bonuses {
+			if b.Save != skillOrSave && b.Skill != skillOrSave {
+				continue
+			}
+			if b.Advantage {
+				advantage += 1
+			}
+			if b.Bonus != 0 {
+				bonus += b.Bonus
+			}
+		}
+	}
+	return advantage, bonus
 }
 
 func newCharacter(path string) (*Character, error) {

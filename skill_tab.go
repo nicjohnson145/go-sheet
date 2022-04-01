@@ -27,7 +27,7 @@ func (s *sheet) skills() fyne.CanvasObject {
 			contents,
 			fyne.NewContainerWithLayout(
 				layout.NewHBoxLayout(),
-				profWidget(func() bool { return s.character.isProficientInSkill(skill) }),
+				proficiencyWidget(skill, s.character.isProficientInSkill),
 				widget.NewLabel(s.character.modStringForSkill(skill)),
 				widget.NewLabel(skill.Name),
 			),
@@ -51,7 +51,7 @@ func (s *sheet) saves() fyne.CanvasObject {
 			contents,
 			fyne.NewContainerWithLayout(
 				layout.NewHBoxLayout(),
-				profWidget(func() bool { return s.character.isProficientInSave(save) }),
+				proficiencyWidget(save, s.character.isProficientInSave),
 				widget.NewLabel(s.character.modStringForSave(save)),
 				widget.NewLabel(save),
 			),
@@ -68,11 +68,10 @@ func (s *sheet) saves() fyne.CanvasObject {
 	)
 }
 
-func profWidget(is func() bool) fyne.CanvasObject {
-	if is() {
+func proficiencyWidget[T any](obj T, check func(T) bool) fyne.CanvasObject {
+	if check(obj) {
 		return widget.NewIcon(theme.RadioButtonCheckedIcon())
 	}
-
 	return widget.NewIcon(theme.RadioButtonIcon())
 }
 

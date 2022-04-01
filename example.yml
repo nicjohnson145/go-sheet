@@ -91,6 +91,13 @@ equipment:
   desc: |
     While wearing this hat, you can use an action to cast the disquise self spell from it at will. The spell ends if the hat is removed
   count: 0
+- name: Boots of Elvenkind
+  desc: |
+    While you wear these boots, your steps make no sound, regardless of the surface you are moving across. You also have advantage on Dexterity (Stealth) checks that rely on moving silently.
+  count: 0
+  bonuses:
+  - skill: Stealth
+    Advantage: true
 consumables:
 - name: Potion of Healing
   desc: |
@@ -109,6 +116,14 @@ features:
 - name: Draconic Resistance
   desc: |
     As magic flows through your body, it causes physical Traits of your Dragon ancestors to emerge. At 1st level, your hit point maximum increases by 1 and increases by 1 again whenever you gain a level in this class.  Additionally, parts of your skin are covered by a thin sheen of dragon-like scales. When you aren’t wearing armor, your AC equals 13 + your Dexterity modifier.
+- name: Incisive Sense
+  desc: |
+    You have advantage on Intelligence (Investigation) and Wisdom (Insight) checks
+  bonuses:
+  - skill: Investigation
+    advantage: true
+  - skill: Insight
+    advantage: true
 spells:
   cantrips:
     slots: 0
