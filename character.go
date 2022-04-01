@@ -362,15 +362,27 @@ func (c *Character) advantageAndBonusFromOutside(skillOrSave string) (int, int) 
 	advantage := 0
 	bonus := 0
 
-	newAd, newBonus := advantageAndBonusLoop(c.Features, skillOrSave)
+	list := []SkillSaveBonuser{}
+	for _, f := range c.Features {
+		list = append(list, f)
+	}
+	newAd, newBonus := advantageAndBonusLoop(list, skillOrSave)
 	advantage += newAd
 	bonus += newBonus
 
-	newAd, newBonus = advantageAndBonusLoop(c.Weapons, skillOrSave)
+	list = []SkillSaveBonuser{}
+	for _, f := range c.Features {
+		list = append(list, f)
+	}
+	newAd, newBonus = advantageAndBonusLoop(list, skillOrSave)
 	advantage += newAd
 	bonus += newBonus
 
-	newAd, newBonus = advantageAndBonusLoop(c.Equipment, skillOrSave)
+	list = []SkillSaveBonuser{}
+	for _, f := range c.Features {
+		list = append(list, f)
+	}
+	newAd, newBonus = advantageAndBonusLoop(list, skillOrSave)
 	advantage += newAd
 	bonus += newBonus
 
@@ -384,7 +396,7 @@ func (c *Character) advantageAndBonusFromOutside(skillOrSave string) (int, int) 
 	return advantage, bonus
 }
 
-func advantageAndBonusLoop[T SkillSaveBonuser](list []T, skillOrSave string) (int, int) {
+func advantageAndBonusLoop(list []SkillSaveBonuser, skillOrSave string) (int, int) {
 	advantage := 0
 	bonus := 0
 	for _, item := range list {
