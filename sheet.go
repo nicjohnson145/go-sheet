@@ -209,7 +209,7 @@ func (s *sheet) hitDiceButton() fyne.CanvasObject {
 }
 
 func (s *sheet) attributeBlock(name string, raw int) fyne.CanvasObject {
-	mod := s.character.modString(s.character.calcMod(raw), 0)
+	mod := s.character.modOnlyModString(s.character.calcMod(raw))
 	return s.basicCard(name, fmt.Sprintf("%v (%v)", raw, mod))
 }
 

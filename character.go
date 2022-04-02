@@ -257,7 +257,7 @@ func (c *Character) calcMod(score int) int {
 }
 
 
-func (c *Character) weaponModString(mod int) string {
+func (c *Character) modOnlyModString(mod int) string {
 	s := c.modString(mod, 0)
 	return s[0:len(s) - 4]
 }
@@ -310,7 +310,7 @@ func (c *Character) modStringForWeapon(w Weapon) string {
 	if w.Proficient {
 		mod += c.Proficiency
 	}
-	return c.weaponModString(mod)
+	return c.modOnlyModString(mod)
 }
 
 func (c *Character) attrForString(s string) int {
