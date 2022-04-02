@@ -56,7 +56,6 @@ type Character struct {
 	Features          []*Item                  `yaml:"features"`
 	SpellReset        string                   `yaml:"spell-reset"`
 	Spells            map[string]*SpellSection `yaml:"spells"`
-	Loot              []*CountableItem         `yaml:"loot"`
 	Resources         []*Resource              `yaml:"resources"`
 	AllSkills         []Skill                  `yaml:"-"`
 	AllSavingThrows   []string                 `yaml:"-"`
