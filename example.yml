@@ -97,7 +97,7 @@ equipment:
   count: 0
   bonuses:
   - skill: Stealth
-    Advantage: true
+    advantage: true
 consumables:
 - name: Potion of Healing
   desc: |

@@ -370,7 +370,7 @@ func (c *Character) advantageAndBonusFromOutside(skillOrSave string) (int, int) 
 	bonus += newBonus
 
 	list = []SkillSaveBonuser{}
-	for _, f := range c.Features {
+	for _, f := range c.Weapons {
 		list = append(list, f)
 	}
 	newAd, newBonus = advantageAndBonusLoop(list, skillOrSave)
@@ -378,7 +378,7 @@ func (c *Character) advantageAndBonusFromOutside(skillOrSave string) (int, int) 
 	bonus += newBonus
 
 	list = []SkillSaveBonuser{}
-	for _, f := range c.Features {
+	for _, f := range c.Equipment {
 		list = append(list, f)
 	}
 	newAd, newBonus = advantageAndBonusLoop(list, skillOrSave)
